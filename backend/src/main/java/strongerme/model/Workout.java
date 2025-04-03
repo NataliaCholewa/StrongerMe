@@ -1,21 +1,31 @@
 package strongerme.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 
 @Entity
 @Table(name = "workouts")
 public class Workout {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     private String name;
     private String description;
+    private LocalDateTime performedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "workout")
+    private List<WorkoutExercise> workoutExercises;
+
+///// gettery i settery skonzyc
     public Workout() {}
 
     public Workout(String name, String description, User user) {
@@ -24,11 +34,11 @@ public class Workout {
         this.user = user;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

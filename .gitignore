@@ -1,32 +1,68 @@
-HELP.md
-target/
-!**/src/main/**/target/
-!**/src/test/**/target/
+# === SECURITY ===
+.env
+.env.*
+*.key
+*.pem
+*.crt
+*.jks
+secrets.yml
+config/application-*.yml
+config/application-*.properties
+**/application-*.yml
+**/application-*.properties
 
-### STS ###
-.apt_generated
+# === Logs ===
+*.log
+logs/
+*.out
+
+# === Build / Package ===
+target/
+build/
+*.class
+
+# === Maven / Gradle ===
+.mvn/
+dependency-reduced-pom.xml
+
+# === Docker ===
+**/docker-volume-data/
+docker-compose.override.yml
+
+# === System Files ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === IDEs ===
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse / STS
 .classpath
-.factorypath
 .project
-.settings
+.settings/
+.apt_generated
+.factorypath
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# === OS-specific ===
+*.swp
+*.swo
+*~

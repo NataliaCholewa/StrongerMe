@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Collections;
 
 @RestController
@@ -18,7 +19,7 @@ public class WorkoutController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Workout>> getWorkoutsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<Workout>> getWorkoutsByUserId(@PathVariable UUID userId) {
         List<Workout> workouts = workoutRepository.findByUserId(userId);
 
         if (workouts.isEmpty()) {

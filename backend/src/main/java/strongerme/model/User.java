@@ -3,16 +3,18 @@ package strongerme.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String username;
+    @GeneratedValue
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -21,23 +23,42 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
+    private String gender;
+    private Double weight;
+    private Double height;
+
+   @Column(nullable = false)
+   private String role = "user";
+
+   @Column(nullable = false)
+   private LocalDate createdAt = LocalDate.now();
+
+    @OneToMany(mappedBy = "user")
+    private List<Workout> workouts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Routine> routines;
+
+    @OneToMany(mappedBy = "user")                 
+    private List<FavoriteExercise> favouriteExercises;
+
 
     public User() {}
 
-    public User(Long id, String username, String email, String password) {
-        this.id = id;
-        this.username = username;
+    public User(UUID id, String email, String password) {          // dopisac reszte
+        this.id = id;           
         this.email = email;
         this.password = password;
     }
-
-    public Long getId() { return id; }
-    public String getUsername() { return username; }
+ // jak sie automaytycznie generuje gettery i settery??
+    public UUID getId() { return id; }                             // dopisac gettery i settery
     public String getEmail() { return email; }
     public String getPassword() { return password; }
 
-    public void setId(Long id) { this.id = id; }
-    public void setUsername(String username) { this.username = username; }
+    public void setId(UUID id) { this.id = id; }
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
 }
