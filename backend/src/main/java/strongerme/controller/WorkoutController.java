@@ -28,9 +28,8 @@ public class WorkoutController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Workout> getWorkoutById(@PathVariable UUID id) {
-        Optional<Workout> workout = workoutService.getWorkoutById(id);
-        return workout.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+        Workout workout = workoutService.getWorkoutById(id);
+        return ResponseEntity.ok(workout);
     }
 
     @PostMapping

@@ -26,8 +26,8 @@ public class RoutineExerciseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RoutineExercise> getById(@PathVariable UUID id) {
-        Optional<RoutineExercise> found = routineExerciseService.getById(id);
-        return found.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        RoutineExercise found = routineExerciseService.getById(id);
+        return ResponseEntity.ok(found);
     }
 
     @PostMapping

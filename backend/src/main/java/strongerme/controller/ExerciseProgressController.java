@@ -26,10 +26,11 @@ public class ExerciseProgressController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ExerciseProgress> getProgressById(@PathVariable UUID id) {
-        return progressService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ExerciseProgress progress = progressService.getById(id); 
+        return ResponseEntity.ok(progress);
     }
+    
+
 
     @GetMapping("/user/{userId}")
     public List<ExerciseProgress> getProgressByUser(@PathVariable UUID userId) {

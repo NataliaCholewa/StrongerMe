@@ -28,10 +28,9 @@ public class RoutineController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Routine> getRoutineById(@PathVariable UUID id) {
-        Optional<Routine> routine = routineService.getRoutineById(id);
-        return routine.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
-    }
+        Routine routine = routineService.getRoutineById(id); 
+        return ResponseEntity.ok(routine);
+}
 
     @PostMapping
     public ResponseEntity<Routine> createRoutine(@RequestBody Routine routine) {

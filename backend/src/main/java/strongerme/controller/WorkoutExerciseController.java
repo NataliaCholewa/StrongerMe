@@ -26,8 +26,8 @@ public class WorkoutExerciseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<WorkoutExercise> getWorkoutExerciseById(@PathVariable UUID id) {
-        Optional<WorkoutExercise> workoutExercise = workoutExerciseService.getWorkoutExerciseById(id);
-        return workoutExercise.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        WorkoutExercise workoutExercise = workoutExerciseService.getWorkoutExerciseById(id);
+        return ResponseEntity.ok(workoutExercise);
     }
 
     @PostMapping
