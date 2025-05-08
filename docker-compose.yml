@@ -1,12 +1,14 @@
 services:
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     depends_on:
       - postgres
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/strongerme
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
 
   postgres:
     image: postgres:15
@@ -17,3 +19,18 @@ services:
       POSTGRES_DB: strongerme
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  frontend:
+    build:
+      context: ./react-app
+    container_name: frontend-1
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+
+volumes:
+  postgres-data: {}
