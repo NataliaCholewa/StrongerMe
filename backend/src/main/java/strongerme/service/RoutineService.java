@@ -1,6 +1,7 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+import strongerme.exception.ApiException;
 import strongerme.model.Routine;
 import strongerme.repository.RoutineRepository;
 
@@ -21,8 +22,8 @@ public class RoutineService {
         return routineRepository.findAll();
     }
 
-    public Optional<Routine> getRoutineById(UUID id) {
-        return routineRepository.findById(id);
+    public Routine getRoutineById(UUID id) {
+        return routineRepository.findById(id).orElseThrow(() -> new ApiException("Routine not found", 404));
     }
 
     public List<Routine> getRoutinesByUserId(UUID userId) {
@@ -34,6 +35,9 @@ public class RoutineService {
     }
 
     public void deleteRoutine(UUID id) {
+        if (!routineRepository.existsById(id)) {
+            throw new ApiException("Routine not found", 404);
+        }
         routineRepository.deleteById(id);
     }
 }

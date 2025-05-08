@@ -1,6 +1,7 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+import strongerme.exception.ApiException;
 import strongerme.model.Exercise;
 import strongerme.repository.ExerciseRepository;
 
@@ -20,11 +21,19 @@ public class ExerciseService {
         return exerciseRepository.findAll();
     }
 
-    public Exercise createExercise(Exercise exercise) {
+    public Exercise createExercise(Exercise exercise) { 
+        Optional<Exercise> existing = exerciseRepository.findByName(exercise.getName());
+        if (existing.isPresent()) {
+            throw new ApiException("Exercise with that name already exists", 400);
+        }
+
         return exerciseRepository.save(exercise);
     }
 
-    public Optional<Exercise> getByName(String name) {
-        return exerciseRepository.findByName(name);
+    public Exercise getByName(String name) {
+        return exerciseRepository.findByName(name).orElseThrow(() -> new ApiException("Exercise not found", 404));
     }
+
+
+    // jeszcze delete
 }

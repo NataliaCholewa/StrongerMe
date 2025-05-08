@@ -2,6 +2,8 @@ package strongerme.service;
 
 import org.springframework.stereotype.Service;
 
+import strongerme.exception.ApiException;
+import strongerme.model.Exercise;
 import strongerme.model.User;
 import strongerme.repository.UserRepository;
 
@@ -18,6 +20,10 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        Optional<User> existing = userRepository.findByEmail(user.getEmail());
+        if (existing.isPresent()) {
+            throw new ApiException("User with that email already exists", 400);
+        }
         return userRepository.save(user);
     }
 
@@ -25,8 +31,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ApiException("User not found", 404));
+
     }
+
+    // dodac delete
     
 }

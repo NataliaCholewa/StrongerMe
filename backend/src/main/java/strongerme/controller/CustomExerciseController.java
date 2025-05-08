@@ -1,49 +1,48 @@
 package strongerme.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import strongerme.model.CustomExercise;
 import strongerme.service.CustomExerciseService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/custom-exercises")
 public class CustomExerciseController {
 
-    private final CustomExerciseService service;
+    private final CustomExerciseService customExerciseService;
 
-    public CustomExerciseController(CustomExerciseService service) {
-        this.service = service;
+    public CustomExerciseController(CustomExerciseService customExerciseService) {
+        this.customExerciseService = customExerciseService;
     }
 
     @GetMapping
     public List<CustomExercise> getAll() {
-        return service.getAll();
+        return customExerciseService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomExercise> getById(@PathVariable UUID id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public CustomExercise getById(@PathVariable UUID id) {
+        return customExerciseService.getById(id);
     }
 
     @GetMapping("/user/{userId}")
     public List<CustomExercise> getByUserId(@PathVariable UUID userId) {
-        return service.getByUserId(userId);
+        return customExerciseService.getAllByUserId(userId);
     }
 
     @PostMapping
-    public CustomExercise create(@RequestBody CustomExercise customExercise) {
-        return service.save(customExercise);
+    public ResponseEntity<CustomExercise> create(@RequestBody CustomExercise customExercise) {
+        CustomExercise saved = customExerciseService.save(customExercise);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        service.delete(id);
+        customExerciseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

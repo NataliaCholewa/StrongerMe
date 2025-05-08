@@ -1,6 +1,7 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+import strongerme.exception.ApiException;
 import strongerme.model.WorkoutExercise;
 import strongerme.repository.WorkoutExerciseRepository;
 
@@ -21,8 +22,8 @@ public class WorkoutExerciseService {
         return workoutExerciseRepository.findAll();
     }
 
-    public Optional<WorkoutExercise> getWorkoutExerciseById(UUID id) {
-        return workoutExerciseRepository.findById(id);
+    public WorkoutExercise getWorkoutExerciseById(UUID id) {
+        return workoutExerciseRepository.findById(id).orElseThrow(() -> new ApiException("WorkoutExercise not found", 404));
     }
 
     public WorkoutExercise createWorkoutExercise(WorkoutExercise workoutExercise) {
@@ -30,6 +31,9 @@ public class WorkoutExerciseService {
     }
 
     public void deleteWorkoutExercise(UUID id) {
+        if (!workoutExerciseRepository.existsById(id)) {
+            throw new ApiException("WorkoutExercise not found", 404);
+        }
         workoutExerciseRepository.deleteById(id);
     }
 }

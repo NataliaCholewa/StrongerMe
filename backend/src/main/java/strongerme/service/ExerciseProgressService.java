@@ -1,6 +1,7 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+import strongerme.exception.ApiException;
 import strongerme.model.ExerciseProgress;
 import strongerme.repository.ExerciseProgressRepository;
 
@@ -21,12 +22,17 @@ public class ExerciseProgressService {
         return progressRepository.findAll();
     }
 
-    public Optional<ExerciseProgress> getById(UUID id) {
-        return progressRepository.findById(id);
+    public ExerciseProgress getById(UUID id) {
+        return progressRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Progress record not found", 404));
     }
 
     public List<ExerciseProgress> getByUserId(UUID userId) {
-        return progressRepository.findByUserId(userId);
+        List<ExerciseProgress> results = progressRepository.findByUserId(userId);
+        if (results.isEmpty()) {
+            throw new ApiException("No progress records for given user", 404);
+        }
+        return results;
     }
 
     public ExerciseProgress saveProgress(ExerciseProgress progress) {
@@ -34,6 +40,9 @@ public class ExerciseProgressService {
     }
 
     public void deleteProgress(UUID id) {
+        if (!progressRepository.existsById(id)) {
+            throw new ApiException("Progress record not found", 404);
+        }
         progressRepository.deleteById(id);
     }
 }

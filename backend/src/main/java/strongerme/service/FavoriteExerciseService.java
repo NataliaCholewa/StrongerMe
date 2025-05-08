@@ -1,6 +1,8 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+
+import strongerme.exception.ApiException;
 import strongerme.model.FavoriteExercise;
 import strongerme.repository.FavoriteExerciseRepository;
 
@@ -34,6 +36,9 @@ public class FavoriteExerciseService {
     }
 
     public void delete(UUID id) {
+        if (!repository.existsById(id)) {
+            throw new ApiException("Favorite exercise not found", 404);
+        }
         repository.deleteById(id);
     }
 }

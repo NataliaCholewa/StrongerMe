@@ -1,6 +1,7 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+import strongerme.exception.ApiException;
 import strongerme.model.CustomExercise;
 import strongerme.repository.CustomExerciseRepository;
 
@@ -21,19 +22,31 @@ public class CustomExerciseService {
         return repository.findAll();
     }
 
-    public Optional<CustomExercise> getById(UUID id) {
-        return repository.findById(id);
+    public CustomExercise getById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ApiException("Custom exercise not found", 404));
     }
 
-    public List<CustomExercise> getByUserId(UUID userId) {
-        return repository.findByUserId(userId);
+    public List<CustomExercise> getAllByUserId(UUID userId) {
+        return repository.findAllByUserId(userId);
     }
 
     public CustomExercise save(CustomExercise customExercise) {
+        UUID userId = customExercise.getUser().getId();
+        String name = customExercise.getName();
+
+        Optional<CustomExercise> existing = repository.findByUserIdAndName(userId, name);
+        if (existing.isPresent()) {
+            throw new ApiException("Custom exercise with that name already exists", 400);
+        }
+
         return repository.save(customExercise);
     }
 
     public void delete(UUID id) {
+        if (!repository.existsById(id)) {
+            throw new ApiException("Custom exercise not found", 404);
+        }
         repository.deleteById(id);
     }
 }

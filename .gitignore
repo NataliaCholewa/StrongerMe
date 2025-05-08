@@ -67,6 +67,21 @@ Desktop.ini
 *.swo
 *~
 
+# Node modules
 node_modules/
-.env
+react-app/node_modules/
+
+# Logs
 *.log
+npm-debug.log*
+
+# dotenv
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IntelliJ / VSCode
+.idea/
+.vscode/
