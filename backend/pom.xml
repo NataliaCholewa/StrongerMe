@@ -71,12 +71,24 @@
 			</exclusions>
 		</dependency>
 
-		<!-- Spring Boot - Security (opcjonalnie, jeśli planujesz logowanie) -->
-		<!--<dependency>
+		<!-- Spring Boot - Security (do logowania) -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
--->
+
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+
+
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt</artifactId>
+    		<version>0.9.1</version>
+		</dependency>
+
 		<!-- Dokumentacja API -->
 		<dependency>
     		<groupId>org.springdoc</groupId>
