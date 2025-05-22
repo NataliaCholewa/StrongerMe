@@ -38,13 +38,9 @@ public class ExerciseService {
 
 
     public Exercise getById(UUID id) {
-        throw new ApiException("To jest mój testowy wyjątek", 404);
-
-    }
-    /*public Exercise getById(UUID id) {
         return exerciseRepository.findById(id)
             .orElseThrow(() -> new ApiException("Exercise not found", 404));
-    }*/
+    }
 
     public void deleteById(UUID id) {
         if (!exerciseRepository.existsById(id)) {

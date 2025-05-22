@@ -9,6 +9,11 @@ import strongerme.service.ExerciseService;
 import java.util.List;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+
 @RestController
 @RequestMapping("/api/exercises")
 public class ExerciseController {
@@ -20,15 +25,30 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
+    @Operation(summary = "Pobiera wszystkie ćwiczenia", description = "Zwraca listę wszystkich ćwiczeń z bazy danych")
+    @ApiResponse(responseCode = "200", description = "Lista ćwiczeń została zwrócona")
+
     @GetMapping
     public List<Exercise> getAllExercises() {
         return exerciseService.getAllExercises();
     }
 
+    @Operation(summary = "Tworzy nowe ćwiczenie", description = "Dodaje nowe ćwiczenie na podstawie przesłanych danych")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "201", description = "Ćwiczenie utworzone pomyślnie"),
+    @ApiResponse(responseCode = "400", description = "Ćwiczenie o podanej nazwie już istnieje", content = @Content)
+    })
+
     @PostMapping
     public Exercise createExercise(@RequestBody Exercise exercise) {
         return exerciseService.createExercise(exercise);
     }
+
+    @Operation(summary = "Pobiera ćwiczenie po ID", description = "Zwraca ćwiczenie o podanym UUID")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Ćwiczenie znalezione"),
+    @ApiResponse(responseCode = "404", description = "Ćwiczenie nie istnieje", content = @Content)
+    })
 
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> getExerciseById(@PathVariable UUID id) {
@@ -36,11 +56,22 @@ public class ExerciseController {
         return ResponseEntity.ok(exercise);
     }
 
+    @Operation(summary = "Pobiera ćwiczenie po nazwie", description = "Zwraca ćwiczenie na podstawie jego nazwy")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Ćwiczenie znalezione"),
+    @ApiResponse(responseCode = "404", description = "Ćwiczenie nie istnieje")
+    })
 
     @GetMapping("/name")
     public Exercise getExerciseByName(@RequestParam String name) {
         return exerciseService.getByName(name);
     }
+
+    @Operation(summary = "Usuwa ćwiczenie po ID", description = "Usuwa ćwiczenie na podstawie UUID")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "204", description = "Ćwiczenie usunięte"),
+    @ApiResponse(responseCode = "404", description = "Ćwiczenie nie istnieje")
+    })
 
     @DeleteMapping("/{id}")
     public void deleteExercise(@PathVariable UUID id) {
