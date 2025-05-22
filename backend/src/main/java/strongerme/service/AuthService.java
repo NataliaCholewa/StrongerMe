@@ -1,24 +1,27 @@
 package strongerme.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import strongerme.dto.RegisterRequest;
 import strongerme.dto.LoginRequest;
+import strongerme.dto.RegisterRequest;
 import strongerme.exception.ApiException;
 import strongerme.model.User;
 import strongerme.repository.UserRepository;
-
-import java.util.Optional;
+import strongerme.security.JwtService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public void register(RegisterRequest request) {
@@ -29,19 +32,21 @@ public class AuthService {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
+        //user.setFirstName(request.getFirstName());
+        //user.setLastName(request.getLastName());
+        user.setRole("user");
 
         userRepository.save(user);
     }
 
-    public User login(LoginRequest request) {
-        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+    public String login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ApiException("User not found", 404));
 
-        if (userOpt.isEmpty() || !passwordEncoder.matches(request.getPassword(), userOpt.get().getPassword())) {
-            throw new ApiException("Invalid email or password", 401);
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new ApiException("Invalid credentials", 401);
         }
 
-        return userOpt.get();
+        return jwtService.generateToken(user.getId(), user.getRole());
     }
 }
