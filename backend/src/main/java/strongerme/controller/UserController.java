@@ -35,14 +35,26 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@RequestParam String value) {
     User user = userService.getByEmail(value); 
     return ResponseEntity.ok(user);
-}
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+        User user = userService.getById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
     User saved = userService.createUser(user);
     return ResponseEntity.ok(saved);
-}
+    }
 }
 
 

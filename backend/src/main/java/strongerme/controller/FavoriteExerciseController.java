@@ -26,9 +26,8 @@ public class FavoriteExerciseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FavoriteExercise> getById(@PathVariable UUID id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.getById(id));
+
     }
 
     @GetMapping("/user/{userId}")

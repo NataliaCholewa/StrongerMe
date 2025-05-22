@@ -23,8 +23,9 @@ public class FavoriteExerciseService {
         return repository.findAll();
     }
 
-    public Optional<FavoriteExercise> getById(UUID id) {
-        return repository.findById(id);
+    public FavoriteExercise getById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ApiException("Favorite exercise not found", 404));
     }
 
     public List<FavoriteExercise> getByUserId(UUID userId) {

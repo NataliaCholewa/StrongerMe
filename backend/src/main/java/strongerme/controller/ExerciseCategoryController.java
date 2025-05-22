@@ -25,8 +25,7 @@ public class ExerciseCategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ExerciseCategory> getById(@PathVariable UUID id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.getById(id));
+
     }
 }

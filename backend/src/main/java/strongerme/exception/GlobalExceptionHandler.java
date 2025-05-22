@@ -9,26 +9,48 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
-        return new ResponseEntity<>(new ApiErrorResponse(ex.getMessage(), 404), HttpStatus.NOT_FOUND);
+        int statusCode = ex.getStatusCode();
+        HttpStatus status = HttpStatus.resolve(statusCode);
+        if (status == null) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(
+                new ApiErrorResponse(ex.getMessage(), statusCode),
+                status
+        );
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiErrorResponse> handleBadRequest(BadRequestException ex) {
-        return new ResponseEntity<>(new ApiErrorResponse(ex.getMessage(), 400), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(
+                new ApiErrorResponse(ex.getMessage(), 400),
+                HttpStatus.BAD_REQUEST
+        );
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiErrorResponse> handleUnauthorized(UnauthorizedException ex) {
-        return new ResponseEntity<>(new ApiErrorResponse(ex.getMessage(), 401), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(
+                new ApiErrorResponse(ex.getMessage(), 401),
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ApiErrorResponse> handleForbidden(ForbiddenException ex) {
-        return new ResponseEntity<>(new ApiErrorResponse(ex.getMessage(), 403), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(
+                new ApiErrorResponse(ex.getMessage(), 403),
+                HttpStatus.FORBIDDEN
+        );
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneralError(Exception ex) {
-        return new ResponseEntity<>(new ApiErrorResponse("Internal server error", 500), HttpStatus.INTERNAL_SERVER_ERROR);
+        ex.printStackTrace(); 
+            return new ResponseEntity<>(
+        new ApiErrorResponse("Internal server error", 500),
+        HttpStatus.INTERNAL_SERVER_ERROR
+    );
     }
 }

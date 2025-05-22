@@ -7,6 +7,8 @@ import strongerme.repository.ExerciseRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @Service
 public class ExerciseService {
@@ -35,5 +37,22 @@ public class ExerciseService {
     }
 
 
-    // jeszcze delete
+    public Exercise getById(UUID id) {
+        throw new ApiException("To jest mój testowy wyjątek", 404);
+
+    }
+    /*public Exercise getById(UUID id) {
+        return exerciseRepository.findById(id)
+            .orElseThrow(() -> new ApiException("Exercise not found", 404));
+    }*/
+
+    public void deleteById(UUID id) {
+        if (!exerciseRepository.existsById(id)) {
+            throw new ApiException("Exercise not found", 404);
+        }
+        exerciseRepository.deleteById(id);
+    }
+
+
+
 }

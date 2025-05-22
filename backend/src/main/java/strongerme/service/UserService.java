@@ -9,6 +9,8 @@ import strongerme.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @Service
 public class UserService {
@@ -36,6 +38,16 @@ public class UserService {
 
     }
 
-    // dodac delete
+    public User getById(UUID id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new ApiException("User not found", 404));
+    }
+
+    public void deleteById(UUID id) {
+        if (!userRepository.existsById(id)) {
+            throw new ApiException("User not found", 404);
+        }
+        userRepository.deleteById(id);
+    }
     
 }

@@ -26,6 +26,7 @@ public class WorkoutService {
         return workoutRepository.findById(id).orElseThrow(() -> new ApiException("Workout not found", 404));
     }
 
+
     public Workout saveWorkout(Workout workout) {
         if (workout.getName() == null || workout.getName().isEmpty()) {
             throw new ApiException("Workout name cannot be empty", 400);
