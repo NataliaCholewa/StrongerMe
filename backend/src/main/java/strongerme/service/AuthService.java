@@ -4,6 +4,7 @@ import strongerme.dto.LoginRequest;
 import strongerme.dto.RegisterRequest;
 import strongerme.exception.ApiException;
 import strongerme.model.User;
+import strongerme.model.Role;
 import strongerme.repository.UserRepository;
 import strongerme.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,9 +33,7 @@ public class AuthService {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        //user.setFirstName(request.getFirstName());
-        //user.setLastName(request.getLastName());
-        user.setRole("user");
+        user.setRole(Role.USER);
 
         userRepository.save(user);
     }

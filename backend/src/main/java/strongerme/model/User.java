@@ -2,10 +2,12 @@ package strongerme.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+import strongerme.model.Role;
+
 
 
 @Entity
@@ -30,8 +32,10 @@ public class User {
     private Double weight;
     private Double height;
 
-   @Column(nullable = false)
-   private String role = "user";
+   @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
 
    @Column(nullable = false)
    private LocalDate createdAt = LocalDate.now();
@@ -63,7 +67,7 @@ public class User {
     public String getGender() { return gender; }
     public Double getWeight() { return weight; }
     public Double getHeight() { return height; }
-    public String getRole() { return role; }
+    public Role getRole() { return role; }
     public LocalDate getCreatedAt() { return createdAt; }
     public List<Workout> getWorkouts() { return workouts; }
     public List<Routine> getRoutines() { return routines; }
@@ -79,7 +83,7 @@ public class User {
     public void setGender(String gender) { this.gender = gender; }
     public void setWeight(Double weight) { this.weight = weight; }
     public void setHeight(Double height) { this.height = height; }
-    public void setRole(String role) { this.role = role; }
+    public void setRole(Role role) { this.role = role; }
     public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
     public void setWorkouts(List<Workout> workouts) { this.workouts = workouts; }
     public void setRoutines(List<Routine> routines) { this.routines = routines; }

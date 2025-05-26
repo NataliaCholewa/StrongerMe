@@ -3,7 +3,7 @@ FROM maven:3.9.4-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Kopiujemy cały backend (łącznie z pom.xml i kodem źródłowym)
-COPY backend/ .
+COPY . .
 
 # Budujemy aplikację
 RUN mvn clean package -DskipTests

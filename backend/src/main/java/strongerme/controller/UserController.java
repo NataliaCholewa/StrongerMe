@@ -9,6 +9,8 @@ import strongerme.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +34,24 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Zwraca aktualnie zalogowanego użytkownika")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Użytkownik został zwrócony"),
+        @ApiResponse(responseCode = "401", description = "Brak autoryzacji")
+    })
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal(); // Działa dzięki JwtAuthenticationFilter
+        return ResponseEntity.ok(user);
+    }
+
+
     @Operation(summary = "Pobiera wszystkich użytkowników", description = "Zwraca listę wszystkich użytkowników z systemu")
     @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Lista użytkowników została zwrócona")
     })
+
 
     @GetMapping
     public List<User> getAllUsers() {
