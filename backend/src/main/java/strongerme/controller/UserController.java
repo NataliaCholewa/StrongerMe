@@ -22,7 +22,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -39,10 +42,11 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Użytkownik został zwrócony"),
         @ApiResponse(responseCode = "401", description = "Brak autoryzacji")
     })
+    
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal(); // Działa dzięki JwtAuthenticationFilter
+        User user = (User) authentication.getPrincipal(); 
         return ResponseEntity.ok(user);
     }
 
@@ -51,7 +55,6 @@ public class UserController {
     @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Lista użytkowników została zwrócona")
     })
-
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -95,7 +98,6 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe")
     })
 
-    
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
     User saved = userService.createUser(user);

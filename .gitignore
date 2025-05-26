@@ -10,6 +10,7 @@ config/application-*.yml
 config/application-*.properties
 **/application-*.yml
 **/application-*.properties
+**/application.properties
 
 # === Logs ===
 *.log

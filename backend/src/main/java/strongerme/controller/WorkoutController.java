@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/workouts")
 public class WorkoutController {
@@ -39,6 +41,7 @@ public class WorkoutController {
     @ApiResponse(responseCode = "200", description = "Trening znaleziony"),
     @ApiResponse(responseCode = "404", description = "Trening nie istnieje")
     })
+    
     @GetMapping("/{id}")
     public ResponseEntity<Workout> getWorkoutById(@PathVariable UUID id) {
         Workout workout = workoutService.getWorkoutById(id);
