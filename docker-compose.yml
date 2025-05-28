@@ -15,7 +15,7 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_USER: ${SPRING_DATASOURCE_URL}
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       POSTGRES_DB: strongerme
     ports:

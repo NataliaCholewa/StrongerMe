@@ -42,7 +42,7 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Użytkownik został zwrócony"),
         @ApiResponse(responseCode = "401", description = "Brak autoryzacji")
     })
-    
+
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +60,13 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @Operation(summary = "Pobiera użytkownika po emailu", description = "Zwraca dane użytkownika na podstawie podanego emailu")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Użytkownik został znaleziony"),
+    @ApiResponse(responseCode = "404", description = "Użytkownik nie istnieje"),
+    @ApiResponse(responseCode = "500", description = "Błąd serwera", content = @Content)
+    })
 
     @GetMapping("/email")
     public ResponseEntity<User> getUserByEmail(@RequestParam String value) {
