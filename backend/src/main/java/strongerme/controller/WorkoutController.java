@@ -1,9 +1,11 @@
 package strongerme.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import strongerme.model.Workout;
+import strongerme.model.User;
 import strongerme.service.WorkoutService;
 
 import java.util.List;
@@ -41,11 +43,18 @@ public class WorkoutController {
     @ApiResponse(responseCode = "200", description = "Trening znaleziony"),
     @ApiResponse(responseCode = "404", description = "Trening nie istnieje")
     })
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Workout> getWorkoutById(@PathVariable UUID id) {
         Workout workout = workoutService.getWorkoutById(id);
         return ResponseEntity.ok(workout);
+    }
+
+    @Operation(summary = "Zwraca treningi aktualnie zalogowanego użytkownika")
+    @GetMapping("/me")
+    public ResponseEntity<List<Workout>> getMyWorkouts() {
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return ResponseEntity.ok(workoutService.getWorkoutsByUserId(user.getId()));
     }
 
     @Operation(summary = "Tworzy nowy trening", description = "Dodaje nowy trening na podstawie przesłanych danych")
@@ -56,6 +65,8 @@ public class WorkoutController {
 
     @PostMapping
     public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        workout.setUser(user);
         Workout saved = workoutService.saveWorkout(workout);
         return ResponseEntity.ok(saved);
     }
