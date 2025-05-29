@@ -10,11 +10,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     try {
       const res = await apiClient.post("/auth/login", { email, password });
-      login(res.data.token);
-      navigate("/dashboard");
+      login(res.data.token); 
+      navigate("/dashboard"); 
     } catch (err) {
       alert("Błąd logowania");
     }
