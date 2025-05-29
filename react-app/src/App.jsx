@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
@@ -20,6 +21,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
     </>
   );

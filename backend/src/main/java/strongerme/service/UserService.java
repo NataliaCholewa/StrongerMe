@@ -2,6 +2,7 @@ package strongerme.service;
 
 import org.springframework.stereotype.Service;
 
+import strongerme.dto.UserDTO;
 import strongerme.exception.ApiException;
 import strongerme.model.Exercise;
 import strongerme.model.User;
@@ -42,6 +43,19 @@ public class UserService {
         return userRepository.findById(id)
             .orElseThrow(() -> new ApiException("User not found", 404));
     }
+
+    public User updateUser(UUID id, UserDTO updated) {
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new ApiException("User not found", 404));
+
+    user.setFirstName(updated.getFirstName());
+    user.setLastName(updated.getLastName());
+    user.setHeight(updated.getHeight());
+    user.setWeight(updated.getWeight());
+    user.setBirthDate(updated.getBirthDate());
+
+    return userRepository.save(user);
+}
 
     public void deleteById(UUID id) {
         if (!userRepository.existsById(id)) {

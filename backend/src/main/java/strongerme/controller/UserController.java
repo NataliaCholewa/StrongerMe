@@ -11,6 +11,7 @@ import strongerme.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -46,11 +47,21 @@ public class UserController {
     })
 
     @GetMapping("/me")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserDTO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal(); 
         return ResponseEntity.ok(new UserDTO(user));
     }
+
+    @PutMapping("/me")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO updatedUser) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) auth.getPrincipal();
+    User updated = userService.updateUser(currentUser.getId(), updatedUser);
+    return ResponseEntity.ok(new UserDTO(updated));
+}
 
 
     @Operation(summary = "Pobiera wszystkich użytkowników", description = "Zwraca listę wszystkich użytkowników z systemu")
