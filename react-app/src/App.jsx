@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/Dashboard";
+import WorkoutsPage from "./pages/WorkoutsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
@@ -22,6 +23,7 @@ function App() {
         }
       />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/workouts" element={<WorkoutsPage />} />
     </Routes>
     </>
   );
