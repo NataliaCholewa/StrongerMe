@@ -43,7 +43,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Workout> workouts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Routine> routines;
 
     @OneToMany(mappedBy = "user")                 

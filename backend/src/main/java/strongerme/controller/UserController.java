@@ -1,7 +1,9 @@
 package strongerme.controller;
 
+import strongerme.dto.UserDTO;
 import strongerme.model.Exercise;
 import strongerme.model.User;
+import strongerme.dto.UserDTO;
 import strongerme.repository.UserRepository;
 import strongerme.service.ExerciseService;
 import strongerme.service.UserService;
@@ -44,10 +46,10 @@ public class UserController {
     })
 
     @GetMapping("/me")
-    public ResponseEntity<User> getCurrentUser() {
+    public ResponseEntity<UserDTO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal(); 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(new UserDTO(user));
     }
 
 
