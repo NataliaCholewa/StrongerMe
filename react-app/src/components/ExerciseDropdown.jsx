@@ -1,4 +1,3 @@
-// components/ExerciseDropdown.jsx
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
 

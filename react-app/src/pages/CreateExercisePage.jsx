@@ -8,7 +8,22 @@ const CreateExercisePage = () => {
     description: "",
     imageUrl: "",
     isUnilateral: false,
+    categoryId: "",
   });
+  
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const res = await apiClient.get("/exercise-categories");
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Failed to fetch categories", err);
+    }
+  };
+  fetchCategories();
+}, []);
 
   const navigate = useNavigate();
 
@@ -25,7 +40,7 @@ const CreateExercisePage = () => {
     try {
       await apiClient.post("/exercises", form);
       alert("Exercise created!");
-      navigate("/"); // lub np. /admin albo /exercises
+      navigate("/"); 
     } catch (err) {
       alert("Error creating exercise.");
       console.error(err);
@@ -36,6 +51,19 @@ const CreateExercisePage = () => {
     <div>
       <h2>Create Exercise</h2>
       <form onSubmit={handleSubmit}>
+        <select
+            name="categoryId"
+            value={form.categoryId}
+            onChange={handleChange}
+            required
+        >
+        <option value="">-- Select category --</option>
+            {categories.map((cat) => (
+        <option key={cat.id} value={cat.id}>
+            {cat.name}
+        </option>
+  ))}
+</select>
         <input
           name="name"
           placeholder="Exercise name"

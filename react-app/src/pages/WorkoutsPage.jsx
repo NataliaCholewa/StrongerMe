@@ -38,10 +38,12 @@ const WorkoutsPage = () => {
         <ul>
           {workouts.map((workout) => (
             <li key={workout.id}>
-              <strong>{workout.name}</strong> – {workout.description}<br />
-              <small>{new Date(workout.performedAt).toLocaleString()}</small>
+                <strong>{workout.name}</strong> – {workout.description}<br />
+                <small>{new Date(workout.performedAt).toLocaleString()}</small><br />
+                <Link to={`/workouts/${workout.id}`}>View details</Link>
             </li>
-          ))}
+        ))}
+
         </ul>
       )}
     </div>
