@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import strongerme.model.Workout;
+import strongerme.dto.WorkoutDetailsDto;
 import strongerme.model.User;
 import strongerme.service.WorkoutService;
 
@@ -47,9 +48,10 @@ public class WorkoutController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<Workout> getWorkoutById(@PathVariable UUID id) {
-        Workout workout = workoutService.getWorkoutById(id);
-        return ResponseEntity.ok(workout);
+    public ResponseEntity<WorkoutDetailsDto> getWorkoutById(@PathVariable UUID id) {
+    Workout workout = workoutService.getWorkoutById(id);
+    WorkoutDetailsDto dto = workoutService.mapToDto(workout);
+    return ResponseEntity.ok(dto);
     }
 
     @Operation(summary = "Zwraca treningi aktualnie zalogowanego użytkownika")
@@ -71,6 +73,22 @@ public class WorkoutController {
         workout.setUser(user);
         Workout saved = workoutService.saveWorkout(workout);
         return ResponseEntity.ok(saved);
+    }
+
+    @Operation(summary = "Edytuje trening", description = "edytuje trening na podstawie przesłanych danych")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Trening został zedytowany"),
+    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane")
+    })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Workout> editWorkout(@PathVariable UUID id,
+        @RequestBody Workout workout) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        workout.setUser(user);
+        workout.setId(id);
+        Workout edited = workoutService.editWorkout(workout);
+        return ResponseEntity.ok(edited);
     }
 
     @Operation(summary = "Usuwa trening po ID", description = "Usuwa trening na podstawie UUID")

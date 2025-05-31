@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const WorkoutBuilder = () => {
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [workoutInfo, setWorkoutInfo] = useState({ name: "", description: "" });
+  
   const navigate = useNavigate();
 
   const handleExerciseSelect = (exercise) => {
