@@ -6,6 +6,9 @@ import Dashboard from "./pages/Dashboard";
 import WorkoutsPage from "./pages/WorkoutsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import WorkoutBuilder from "./pages/WorkoutBuilder";
+import CreateExercisePage from "./pages/CreateExercisePage";
+
 
 function App() {
   return (
@@ -24,7 +27,10 @@ function App() {
       />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/workouts" element={<WorkoutsPage />} />
+      <Route path="/create-workout" element={<WorkoutBuilder />} />
+      <Route path="/create-exercise" element={<CreateExercisePage />} />
     </Routes>
+
     </>
   );
 }

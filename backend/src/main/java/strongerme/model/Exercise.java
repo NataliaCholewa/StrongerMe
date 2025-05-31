@@ -33,8 +33,7 @@ public class Exercise {
     private List<RoutineExercise> routineExercises;
 
 
-    public Exercise() {} // konstruktor bezargumentowy
-
+    public Exercise() {} 
     public Exercise(String name, String description, String imageUrl) {
         this.name = name;
         this.description = description;

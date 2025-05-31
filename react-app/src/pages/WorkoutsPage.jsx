@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
+import { Link } from "react-router-dom";
+
+
 
 const WorkoutsPage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -24,6 +28,9 @@ const WorkoutsPage = () => {
 
   return (
     <div>
+        <Link to="/create-workout">
+            <button>Add Workout</button>
+        </Link>
       <h2>My Workouts</h2>
       {workouts.length === 0 ? (
         <p>No workouts found.</p>
