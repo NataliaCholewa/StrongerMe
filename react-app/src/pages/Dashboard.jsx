@@ -14,7 +14,7 @@ const Dashboard = () => {
         <button>Create Workout</button>
       </Link>
       {user?.role === "ADMIN" && (
-      <Link to="/create-exercise">
+      <Link to="/admin/exercises">
         <button>Create Exercise</button>
       </Link>
 )}
