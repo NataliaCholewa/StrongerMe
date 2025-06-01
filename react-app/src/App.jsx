@@ -7,7 +7,6 @@ import WorkoutsPage from "./pages/WorkoutsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import WorkoutBuilder from "./pages/WorkoutBuilder";
-import CreateExercisePage from "./pages/CreateExercisePage";
 import WorkoutDetailsPage from "./pages/WorkoutDetailsPage";
 import EditWorkoutPage from "./pages/EditWorkoutPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
@@ -31,12 +30,9 @@ function App() {
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/workouts" element={<WorkoutsPage />} />
       <Route path="/create-workout" element={<WorkoutBuilder />} />
-      <Route path="/create-exercise" element={<CreateExercisePage />} />
       <Route path="/workouts/:id" element={<WorkoutDetailsPage />} />
-      <Route path="/edit-workout" element={<EditWorkoutPage />} />
-      <Route
-  path="/admin/exercises"
-  element={
+      <Route path="/workouts/:id/edit" element={<EditWorkoutPage />} />
+      <Route path="/admin/exercises" element={
     <ProtectedRoute adminOnly={true}>
       <AdminPanelPage />
     </ProtectedRoute>
