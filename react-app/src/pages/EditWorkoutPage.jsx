@@ -1,6 +1,8 @@
 import { useState } from "react";
 import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const EditWorkoutPage = () => {
   const { id } = useParams();
@@ -69,7 +71,7 @@ const EditWorkoutPage = () => {
     <form onSubmit={handleSubmit}>
       <input
         name="name"
-        value={formData.name}
+        value={formData.name}              
         onChange={handleChange}
         placeholder="Workout name"
         required

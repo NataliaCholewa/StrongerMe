@@ -40,6 +40,23 @@ const WorkoutsPage = () => {
             <li key={workout.id}>
                 <strong>{workout.name}</strong> – {workout.description}<br />
                 <small>{new Date(workout.performedAt).toLocaleString()}</small><br />
+                <button
+        onClick={async () => {
+          const confirmed = window.confirm("Are you sure you want to delete this workout?");
+          if (!confirmed) return;
+
+          try {
+            await apiClient.delete(`/workouts/${workout.id}`);
+            setWorkouts((prev) => prev.filter((w) => w.id !== workout.id));
+            alert("Workout deleted.");
+          } catch (err) {
+            console.error("Delete failed", err);
+            alert("Failed to delete workout.");
+          }
+        }}
+      >
+        Delete workout
+      </button>
                 <Link to={`/workouts/${workout.id}`}>View details</Link>
             </li>
         ))}

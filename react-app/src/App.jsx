@@ -9,7 +9,7 @@ import Navbar from "./components/Navbar";
 import WorkoutBuilder from "./pages/WorkoutBuilder";
 import CreateExercisePage from "./pages/CreateExercisePage";
 import WorkoutDetailsPage from "./pages/WorkoutDetailsPage";
-import WorkoutDetailsPage from "./pages/EditWorkoutPage";
+import EditWorkoutPage from "./pages/EditWorkoutPage";
 
 
 
