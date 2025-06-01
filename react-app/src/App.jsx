@@ -10,6 +10,8 @@ import WorkoutBuilder from "./pages/WorkoutBuilder";
 import CreateExercisePage from "./pages/CreateExercisePage";
 import WorkoutDetailsPage from "./pages/WorkoutDetailsPage";
 import EditWorkoutPage from "./pages/EditWorkoutPage";
+import AdminPanelPage from "./pages/AdminPanelPage";
+
 
 
 
@@ -32,6 +34,16 @@ function App() {
       <Route path="/create-exercise" element={<CreateExercisePage />} />
       <Route path="/workouts/:id" element={<WorkoutDetailsPage />} />
       <Route path="/edit-workout" element={<EditWorkoutPage />} />
+      <Route
+  path="/admin/exercises"
+  element={
+    <ProtectedRoute adminOnly={true}>
+      <AdminPanelPage />
+    </ProtectedRoute>
+  }
+/>
+
+      
     </Routes>
 
     </>
