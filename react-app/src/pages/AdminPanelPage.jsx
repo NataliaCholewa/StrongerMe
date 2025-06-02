@@ -3,6 +3,7 @@ import apiClient from "../services/apiClient";
 
 const AdminPanelPage = () => {
   const [form, setForm] = useState({ name: "", description: "", imageUrl: "", isUnilateral: false, categoryId: "" });
+  const [imageFile, setImageFile] = useState(null);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -18,15 +19,42 @@ const AdminPanelPage = () => {
     setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
+    const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  const uploadImage = async () => {
+    const data = new FormData();
+    data.append("file", imageFile);
+
+    const res = await apiClient.post("/uploads/exercise-image", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data.imageUrl;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await apiClient.post("/exercises", form);
-      alert("Exercise added!");
-      setForm({ name: "", description: "", imageUrl: "", isUnilateral: false, categoryId: "" });
 
+    try {
+      let imageUrl = "";
+
+      if (imageFile) {
+        imageUrl = await uploadImage();
+      }
+
+      const payload = {
+        ...form,
+        imageUrl,
+      };
+
+      await apiClient.post("/exercises", payload);
+      alert("Exercise created!");
+      setForm({ name: "", description: "", imageUrl: "", isUnilateral: false, categoryId: "" });
+      setImageFile(null);
     } catch (err) {
-      console.error(err);
+      console.error("Error creating exercise", err);
       alert("Failed to add exercise.");
     }
   };
@@ -61,10 +89,9 @@ const AdminPanelPage = () => {
           onChange={handleChange}
         />
         <input
-          name="imageUrl"
-          placeholder="Image URL"
-          value={form.imageUrl}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
         />
         <label>
           <input

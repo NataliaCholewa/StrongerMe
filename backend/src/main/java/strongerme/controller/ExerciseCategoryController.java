@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/exercise-categories")
 public class ExerciseCategoryController {
 
     private final ExerciseCategoryService service;

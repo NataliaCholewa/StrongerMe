@@ -3,7 +3,12 @@ package strongerme.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import strongerme.dto.ExerciseDto;
 import strongerme.model.Exercise;
+import strongerme.model.ExerciseCategory;
+import strongerme.repository.ExerciseRepository;
+import strongerme.service.ExerciseCategoryService;
 import strongerme.service.ExerciseService;
 
 import java.util.List;
@@ -19,10 +24,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
+    private final ExerciseRepository exerciseRepository;
+    private final ExerciseCategoryService categoryService;
 
     @Autowired
-    public ExerciseController(ExerciseService exerciseService) {
+    public ExerciseController(ExerciseService exerciseService, ExerciseRepository exerciseRepository, ExerciseCategoryService categoryService) {
         this.exerciseService = exerciseService;
+        this.exerciseRepository = exerciseRepository;
+        this.categoryService = categoryService;
     }
 
     @Operation(summary = "Pobiera wszystkie ćwiczenia", description = "Zwraca listę wszystkich ćwiczeń z bazy danych")
@@ -30,7 +39,7 @@ public class ExerciseController {
 
     @GetMapping
     public List<Exercise> getAllExercises() {
-        return exerciseService.getAllExercises();
+        return exerciseService.getAllWithCategory();
     }
 
     @Operation(summary = "Tworzy nowe ćwiczenie", description = "Dodaje nowe ćwiczenie na podstawie przesłanych danych")
@@ -40,8 +49,18 @@ public class ExerciseController {
     })
 
     @PostMapping
-    public Exercise createExercise(@RequestBody Exercise exercise) {
-        return exerciseService.createExercise(exercise);
+    public ResponseEntity<Exercise> createExercise(@RequestBody ExerciseDto dto) {
+        Exercise exercise = new Exercise();
+        exercise.setName(dto.getName());
+        exercise.setDescription(dto.getDescription());
+        exercise.setImageUrl(dto.getImageUrl());
+        exercise.setUnilateral(dto.isUnilateral());
+
+        ExerciseCategory category = categoryService.getById(dto.getCategoryId());
+        exercise.setCategory(category);
+
+        Exercise saved = exerciseRepository.save(exercise);
+        return ResponseEntity.ok(saved);
     }
 
     @Operation(summary = "Pobiera ćwiczenie po ID", description = "Zwraca ćwiczenie o podanym UUID")
