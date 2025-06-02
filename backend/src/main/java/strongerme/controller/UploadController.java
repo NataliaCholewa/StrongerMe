@@ -22,7 +22,10 @@ public class UploadController {
             }
 
             String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
-            Path path = Paths.get(uploadDir + filename);
+            Path path = Paths.get(System.getProperty("user.dir"), "uploads", filename);
+            System.out.println("Saving to: " + path.toAbsolutePath());
+
+
 
             Files.createDirectories(path.getParent());
 

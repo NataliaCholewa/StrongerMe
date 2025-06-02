@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "exercises")
@@ -24,6 +26,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonManagedReference
     private ExerciseCategory category;
 
     @OneToMany(mappedBy = "exercise")
