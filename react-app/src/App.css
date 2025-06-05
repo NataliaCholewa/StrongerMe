@@ -242,3 +242,133 @@ a:hover {
   background-color: transparent;
   border: 2px solid #7c3aed;
 }
+
+.workouts-container {
+  padding: 2rem;
+}
+
+.header-row {
+  display: block;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.primary-btn {
+  background-color: #8b5cf6;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: #7c3aed;
+}
+
+.workout-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.workout-card {
+  background-color: #1c1c1c;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.workout-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.workout-desc {
+  color: #bbb;
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+
+.workout-date {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+.add-workout-button {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.workout-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.workout-actions button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.details-link {
+  color: #a78bfa;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.profile-avatar {
+  margin-bottom: 2rem;
+}
+
+.avatar-icon {
+  font-size: 6rem;
+  margin-bottom: 0.5rem;
+}
+
+.joined-date {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.profile-details {
+  text-align: left;
+  max-width: 400px;
+  width: 100%;
+}
+
+.profile-details h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.profile-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-details li {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}

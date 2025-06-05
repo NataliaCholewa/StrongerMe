@@ -1,78 +1,36 @@
 import { useAuth } from "../context/AuthContext";
-import apiClient from "../services/apiClient";
-import { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import "../App.css"; 
 
 const ProfilePage = () => {
-  const { user, token } = useAuth();
-
-  const [formData, setFormData] = useState({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    birthDate: user?.birthDate || "",
-    height: user?.height || "",
-    weight: user?.weight || "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await apiClient.put("/users/me", formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Profile updated successfully!");
-    } catch (err) {
-      alert("Something went wrong while updating profile.");
-      console.error(err);
-    }
-  };
+  const { user } = useAuth();
 
   if (!user) return <p>Loading...</p>;
 
-  return (
-    <div>
-      <h2>User Profile</h2>
-      <p><strong>Email:</strong> {user.email}</p>
+  const joinedDate = new Date(user.createdAt).toLocaleDateString();
+  const age = user.birthDate
+    ? Math.floor((new Date() - new Date(user.birthDate)) / (365.25 * 24 * 60 * 60 * 1000))
+    : "—";
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          placeholder="First name"
-        />
-        <input
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          placeholder="Last name"
-        />
-        <input
-          name="birthDate"
-          type="date"
-          value={formData.birthDate}
-          onChange={handleChange}
-        />
-        <input
-          name="height"
-          type="number"
-          value={formData.height}
-          onChange={handleChange}
-          placeholder="Height (cm)"
-        />
-        <input
-          name="weight"
-          type="number"
-          value={formData.weight}
-          onChange={handleChange}
-          placeholder="Weight (kg)"
-        />
-        <button type="submit">Save changes</button>
-      </form>
+  return (
+    <div className="profile-wrapper">
+      <div className="profile-avatar">
+        <div className="avatar-icon">
+  <FaUserCircle size={100} color="#888" />
+</div>
+        <h2>{user.firstName} {user.lastName}</h2>
+        <p className="joined-date">Joined {joinedDate}</p>
+      </div>
+
+      <div className="profile-details">
+        <h3>Personal Details</h3>
+        <ul>
+          <li><strong>Gender:</strong> {user.gender || "—"}</li>
+          <li><strong>Age:</strong> {age}</li>
+          <li><strong>Weight:</strong> {user.weight} kg</li>
+          <li><strong>Height:</strong> {user.height} cm</li>
+        </ul>
+      </div>
     </div>
   );
 };
