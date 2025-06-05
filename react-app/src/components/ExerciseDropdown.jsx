@@ -8,32 +8,30 @@ const ExerciseDropdown = ({ onSelect }) => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-  const fetchExercises = async () => {
-  try {
-    const res = await apiClient.get("/exercises");
+    const fetchExercises = async () => {
+      try {
+        const res = await apiClient.get("/exercises");
 
-    if (!Array.isArray(res.data)) {
-      throw new Error("Expected an array from /exercises");
-    }
+        if (!Array.isArray(res.data)) {
+          throw new Error("Expected an array from /exercises");
+        }
 
-    const grouped = {};
+        const grouped = {};
+        res.data.forEach((ex) => {
+          if (!ex.categoryName) return;
+          const cat = ex.categoryName;
+          if (!grouped[cat]) grouped[cat] = [];
+          grouped[cat].push(ex);
+        });
 
-    res.data.forEach((ex) => {
-      const cat = ex.category?.name || "Other";
-      if (!grouped[cat]) grouped[cat] = [];
-      grouped[cat].push(ex);
-    });
+        setExercisesByCategory(grouped);
+      } catch (err) {
+        console.error("Failed to load exercises", err);
+      }
+    };
 
-    setExercisesByCategory(grouped);
-
-
-  } catch (err) {
-    console.error("Failed to load exercises", err);
-  }
-};
-
-  fetchExercises();
-}, []);
+    fetchExercises();
+  }, []);
 
   const toggle = (cat) => {
     setExpandedCategory((prev) => (prev === cat ? null : cat));
@@ -44,9 +42,6 @@ const ExerciseDropdown = ({ onSelect }) => {
       ex.name.toLowerCase().includes(search.toLowerCase())
     );
 
-  <pre>{JSON.stringify(exercisesByCategory, null, 2)}</pre>
-
-
   return (
     <div>
       <input
@@ -54,27 +49,29 @@ const ExerciseDropdown = ({ onSelect }) => {
         placeholder="Search exercises..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mb-4 p-2 border rounded w-full"
+        className="exercise-search"
       />
 
-      {Object.entries(exercisesByCategory).map(([category, list]) => (
-        <div key={category} className="mb-4">
-          <button
-            onClick={() => toggle(category)}
-            className="font-bold text-left text-lg mb-2"
-          >
-            {category}
-          </button>
+      <div className="category-grid">
+        {Object.entries(exercisesByCategory).map(([category, list]) => (
+          <div key={category}>
+            <button
+              onClick={() => toggle(category)}
+              className="category-button"
+            >
+              {category}
+            </button>
 
-          {expandedCategory === category && (
-            <div className="flex flex-col gap-2 ml-4">
-              {filteredExercises(list).map((ex) => (
-                <ExerciseItem key={ex.id} exercise={ex} onSelect={onSelect} />
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+            {expandedCategory === category && (
+              <div className="flex flex-col gap-2 ml-4 mt-2">
+                {filteredExercises(list).map((ex) => (
+                  <ExerciseItem key={ex.id} exercise={ex} onSelect={onSelect} />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

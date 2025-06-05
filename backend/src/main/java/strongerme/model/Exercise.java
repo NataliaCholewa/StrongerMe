@@ -34,6 +34,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private ExerciseCategory category;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)

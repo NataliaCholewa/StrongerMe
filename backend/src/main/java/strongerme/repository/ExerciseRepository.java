@@ -13,7 +13,7 @@ import strongerme.model.Exercise;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
-    @Query("SELECT e FROM Exercise e JOIN FETCH e.category")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.category")
     List<Exercise> findAllWithCategory();
 
     Optional<Exercise> findByName(String name);

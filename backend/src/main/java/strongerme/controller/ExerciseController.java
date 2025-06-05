@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import strongerme.dto.ExerciseDto;
+import strongerme.dto.ExerciseResponseDto;
 import strongerme.model.Exercise;
 import strongerme.model.ExerciseCategory;
 import strongerme.repository.ExerciseRepository;
@@ -38,9 +39,11 @@ public class ExerciseController {
     @ApiResponse(responseCode = "200", description = "Lista ćwiczeń została zwrócona")
 
     @GetMapping
-    public List<Exercise> getAllExercises() {
-        return exerciseService.getAllWithCategory();
-    }
+public ResponseEntity<List<ExerciseResponseDto>> getAllExercises() {
+    return ResponseEntity.ok(exerciseService.getAllAsDto());
+}
+
+
 
     @Operation(summary = "Tworzy nowe ćwiczenie", description = "Dodaje nowe ćwiczenie na podstawie przesłanych danych")
     @ApiResponses(value = {

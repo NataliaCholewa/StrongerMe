@@ -1,0 +1,39 @@
+:root {
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --primary-color: #1976d2;
+  --primary-hover: #1565c0;
+  --text-color: #f0f0f0;
+  --text-muted: #aaa;
+  --border-color: #333;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: var(--text-color);
+}
+
+input, textarea {
+  padding: 8px;
+  margin: 6px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+button {
+  cursor: pointer;
+}

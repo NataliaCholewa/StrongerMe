@@ -2,38 +2,37 @@ import { useState } from "react";
 import ExerciseDropdown from "../components/ExerciseDropdown";
 import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 const WorkoutBuilder = () => {
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [workoutInfo, setWorkoutInfo] = useState({ name: "", description: "" });
-  
+
   const navigate = useNavigate();
 
   const handleExerciseSelect = (exercise) => {
-    const exists = selectedExercises.find(e => e.id === exercise.id);
+    const exists = selectedExercises.find((e) => e.id === exercise.id);
     if (!exists) {
-      setSelectedExercises(prev => [
+      setSelectedExercises((prev) => [
         ...prev,
-        { ...exercise, sets: "", reps: "", weight: "" }
+        { ...exercise, sets: "", reps: "", weight: "" },
       ]);
     }
   };
 
   const handleExerciseChange = (id, field, value) => {
-    setSelectedExercises(prev =>
-      prev.map(ex =>
-        ex.id === id ? { ...ex, [field]: value } : ex
-      )
+    setSelectedExercises((prev) =>
+      prev.map((ex) => (ex.id === id ? { ...ex, [field]: value } : ex))
     );
   };
 
   const handleRemove = (id) => {
-    setSelectedExercises(prev => prev.filter(e => e.id !== id));
+    setSelectedExercises((prev) => prev.filter((e) => e.id !== id));
   };
 
   const handleWorkoutInfoChange = (e) => {
     const { name, value } = e.target;
-    setWorkoutInfo(prev => ({ ...prev, [name]: value }));
+    setWorkoutInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSaveWorkout = async () => {
@@ -41,12 +40,12 @@ const WorkoutBuilder = () => {
       const workoutPayload = {
         name: workoutInfo.name,
         description: workoutInfo.description,
-        exercises: selectedExercises.map(e => ({
+        exercises: selectedExercises.map((e) => ({
           exerciseId: e.id,
           sets: Number(e.sets),
           reps: Number(e.reps),
-          weight: Number(e.weight)
-        }))
+          weight: Number(e.weight),
+        })),
       };
 
       await apiClient.post("/workouts", workoutPayload);
@@ -59,23 +58,30 @@ const WorkoutBuilder = () => {
   };
 
   return (
-    <div>
+    <div className="create-workout-container">
       <h2>Create Workout</h2>
 
-      <div>
-        <input
-          name="name"
-          placeholder="Workout name"
-          value={workoutInfo.name}
-          onChange={handleWorkoutInfoChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Workout description"
-          value={workoutInfo.description}
-          onChange={handleWorkoutInfoChange}
-        />
+      <div className="form-row">
+        <div className="input-group">
+          <label>Workout name</label>
+          <input
+            name="name"
+            type="text"
+            value={workoutInfo.name}
+            onChange={handleWorkoutInfoChange}
+            placeholder="Workout name"
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Workout description</label>
+          <textarea
+            name="description"
+            value={workoutInfo.description}
+            onChange={handleWorkoutInfoChange}
+            placeholder="Workout description"
+          />
+        </div>
       </div>
 
       <ExerciseDropdown onSelect={handleExerciseSelect} />
@@ -120,7 +126,10 @@ const WorkoutBuilder = () => {
         </ul>
       )}
 
-      <button onClick={handleSaveWorkout} disabled={selectedExercises.length === 0}>
+      <button
+        onClick={handleSaveWorkout}
+        disabled={selectedExercises.length === 0}
+      >
         Save Workout
       </button>
     </div>

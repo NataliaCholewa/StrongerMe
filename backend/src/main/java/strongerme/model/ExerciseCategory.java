@@ -26,8 +26,8 @@ public class ExerciseCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnore 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)    
+    //@JsonManagedReference 
     private List<Exercise> exercises;
 
     public ExerciseCategory() {

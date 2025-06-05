@@ -2,23 +2,21 @@ package strongerme.dto;
 
 import java.util.UUID;
 
-public class ExerciseDto {
-
-    private String categoryName;
+public class ExerciseResponseDto {
+    private UUID id;
     private String name;
     private String description;
     private String imageUrl;
     private boolean isUnilateral;
-    private UUID categoryId;
+    private String categoryName;
 
-    public ExerciseDto() {}
-
-    public String getCategoryName() {
-        return categoryName;
+    // Gettery i settery
+    public UUID getId() {
+        return id;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -53,11 +51,11 @@ public class ExerciseDto {
         isUnilateral = unilateral;
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

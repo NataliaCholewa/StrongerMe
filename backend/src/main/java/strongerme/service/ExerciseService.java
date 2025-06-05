@@ -1,6 +1,9 @@
 package strongerme.service;
 
 import org.springframework.stereotype.Service;
+
+import strongerme.dto.ExerciseDto;
+import strongerme.dto.ExerciseResponseDto;
 import strongerme.exception.ApiException;
 import strongerme.model.Exercise;
 import strongerme.repository.ExerciseRepository;
@@ -48,6 +51,27 @@ public class ExerciseService {
         }
         exerciseRepository.deleteById(id);
     }
+
+    public List<ExerciseResponseDto> getAllAsDto() {
+    List<Exercise> exercises = exerciseRepository.findAllWithCategory();
+
+    return exercises.stream().map(ex -> {
+        ExerciseResponseDto dto = new ExerciseResponseDto();
+        dto.setId(ex.getId());
+        dto.setName(ex.getName());
+        dto.setDescription(ex.getDescription());
+        dto.setImageUrl(ex.getImageUrl());
+        dto.setUnilateral(ex.isUnilateral());
+
+        if (ex.getCategory() != null) {
+            dto.setCategoryName(ex.getCategory().getName());
+        }
+
+        return dto;
+    }).toList();
+}
+
+
 
 
 

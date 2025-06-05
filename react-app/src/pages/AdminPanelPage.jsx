@@ -45,8 +45,11 @@ const AdminPanelPage = () => {
       }
 
       const payload = {
-        ...form,
-        imageUrl,
+        name: form.name,
+        description: form.description,
+        imageUrl: form.imageUrl,
+        unilateral: form.unilateral,
+        categoryId: form.categoryId, 
       };
 
       await apiClient.post("/exercises", payload);
