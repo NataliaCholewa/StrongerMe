@@ -86,3 +86,6 @@ Thumbs.db
 # IntelliJ / VSCode
 .idea/
 .vscode/
+
+
+/uploads/

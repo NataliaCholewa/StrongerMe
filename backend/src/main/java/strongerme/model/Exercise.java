@@ -4,8 +4,16 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 
 @Entity
 @Table(name = "exercises")
@@ -18,19 +26,20 @@ public class Exercise {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private String description;  // tekstowy opis techniki
-    private String imageUrl;     // ew link do zdjecia 
+    private String description;
+    private String imageUrl;
 
     @Column(nullable = false)
     private boolean isUnilateral = false;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonManagedReference
     private ExerciseCategory category;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<WorkoutExercise> workoutExercises;
+
 
     @OneToMany(mappedBy = "exercise")
     private List<RoutineExercise> routineExercises;

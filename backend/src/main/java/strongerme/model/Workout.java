@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "workouts")
 public class Workout {
@@ -19,9 +21,11 @@ public class Workout {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<WorkoutExercise> workoutExercises;
 
     public Workout() {}

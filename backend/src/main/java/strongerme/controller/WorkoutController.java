@@ -1,5 +1,6 @@
 package strongerme.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import strongerme.model.Workout;
 import strongerme.dto.WorkoutDetailsDto;
+import strongerme.dto.WorkoutRequest;
 import strongerme.model.User;
 import strongerme.service.WorkoutService;
 
@@ -68,12 +70,13 @@ public class WorkoutController {
     })
 
     @PostMapping
-    public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        workout.setUser(user);
-        Workout saved = workoutService.saveWorkout(workout);
-        return ResponseEntity.ok(saved);
-    }
+    public ResponseEntity<?> createWorkout(
+        @RequestBody WorkoutRequest request,
+        @AuthenticationPrincipal User user) {
+    Workout workout = workoutService.createWorkout(request, user);
+    return ResponseEntity.ok(workout);
+}
+
 
     @Operation(summary = "Edytuje trening", description = "edytuje trening na podstawie przesłanych danych")
     @ApiResponses(value = {

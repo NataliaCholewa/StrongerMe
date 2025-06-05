@@ -1,28 +1,28 @@
 package strongerme.service;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-
 import strongerme.dto.WorkoutDetailsDto;
+import strongerme.dto.WorkoutExerciseRequest;
+import strongerme.dto.WorkoutRequest;
 import strongerme.exception.ApiException;
-import strongerme.model.User;
-import strongerme.model.Workout;
+import strongerme.model.*;
+import strongerme.repository.ExerciseRepository;
 import strongerme.repository.WorkoutRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
+    private final ExerciseRepository exerciseRepository;
 
-    public WorkoutService(WorkoutRepository workoutRepository) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository) {
         this.workoutRepository = workoutRepository;
+        this.exerciseRepository = exerciseRepository;
     }
 
     public List<Workout> getAllWorkouts() {
@@ -30,9 +30,9 @@ public class WorkoutService {
     }
 
     public Workout getWorkoutById(UUID id) {
-        return workoutRepository.findById(id).orElseThrow(() -> new ApiException("Workout not found", 404));
+        return workoutRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Workout not found", 404));
     }
-
 
     public Workout saveWorkout(Workout workout) {
         if (workout.getName() == null || workout.getName().isEmpty()) {
@@ -54,9 +54,8 @@ public class WorkoutService {
             throw new ApiException("Workout name cannot be empty", 400);
         }
         Workout existing = workoutRepository.findById(workout.getId())
-            .orElseThrow(() -> new ApiException("Workout not found", 404));
+                .orElseThrow(() -> new ApiException("Workout not found", 404));
         return workoutRepository.save(workout);
-        
     }
 
     public void deleteWorkout(UUID id) {
@@ -67,28 +66,57 @@ public class WorkoutService {
     }
 
     public WorkoutDetailsDto mapToDto(Workout workout) {
-    WorkoutDetailsDto dto = new WorkoutDetailsDto();
-    dto.setId(workout.getId());
-    dto.setName(workout.getName());
-    dto.setDescription(workout.getDescription());
-    dto.setPerformedAt(workout.getPerformedAt());
+        WorkoutDetailsDto dto = new WorkoutDetailsDto();
+        dto.setId(workout.getId());
+        dto.setName(workout.getName());
+        dto.setDescription(workout.getDescription());
+        dto.setPerformedAt(workout.getPerformedAt());
 
-    List<WorkoutDetailsDto.ExerciseEntry> entries = workout.getWorkoutExercises()
-        .stream()
-        .map(we -> {
-            WorkoutDetailsDto.ExerciseEntry entry = new WorkoutDetailsDto.ExerciseEntry();
-            entry.setId(we.getId());
-            entry.setName(we.getExercise().getName());
-            entry.setSets(we.getSets());
-            entry.setReps(we.getReps());
-            entry.setWeight(we.getWeight());
-            return entry;
-        })
-        .toList();
+        List<WorkoutDetailsDto.ExerciseEntry> entries = workout.getWorkoutExercises()
+                .stream()
+                .map(we -> {
+                    WorkoutDetailsDto.ExerciseEntry entry = new WorkoutDetailsDto.ExerciseEntry();
+                    entry.setId(we.getId());
+                    entry.setName(we.getExercise().getName());
+                    entry.setSets(we.getSets());
+                    entry.setReps(we.getReps());
+                    entry.setWeight(we.getWeight());
+                    return entry;
+                })
+                .toList();
 
-    dto.setWorkoutExercises(entries);
-    return dto;
+        dto.setWorkoutExercises(entries);
+        return dto;
+    }
+
+    @Transactional
+    public Workout createWorkout(WorkoutRequest request, User user) {
+        if (request.getName() == null || request.getName().isBlank()) {
+            throw new ApiException("Workout name is required", 400);
+        }
+
+        Workout workout = new Workout();
+        workout.setName(request.getName());
+        workout.setDescription(request.getDescription());
+        workout.setUser(user);
+
+        List<WorkoutExercise> workoutExercises = new ArrayList<>();
+
+        for (WorkoutExerciseRequest req : request.getExercises()) {
+            Exercise exercise = exerciseRepository.findById(req.getExerciseId())
+                    .orElseThrow(() -> new ApiException("Exercise not found", 404));
+
+            WorkoutExercise we = new WorkoutExercise();
+            we.setExercise(exercise);
+            we.setWorkout(workout);
+            we.setSets(req.getSets());
+            we.setReps(req.getReps());
+            we.setWeight(req.getWeight());
+
+            workoutExercises.add(we);
+        }
+
+        workout.setWorkoutExercises(workoutExercises);
+        return workoutRepository.save(workout);
+    }
 }
-
-}
-
