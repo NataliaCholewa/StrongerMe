@@ -32,6 +32,9 @@ public class User {
     private Double weight;
     private Double height;
 
+    @Column(name = "weekly_goal")
+private Integer weeklyGoal = 5; 
+
    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;
@@ -64,6 +67,7 @@ public class User {
     public String getPassword() { return password; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
+    public Integer getWeeklyGoal() { return weeklyGoal; }
     public LocalDate getBirthDate() { return birthDate; }
     public String getGender() { return gender; }
     public Double getWeight() { return weight; }
@@ -80,6 +84,7 @@ public class User {
     public void setPassword(String password) { this.password = password; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setWeeklyGoal(Integer weeklyGoal) { this.weeklyGoal = weeklyGoal; }
     public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
     public void setGender(String gender) { this.gender = gender; }
     public void setWeight(Double weight) { this.weight = weight; }

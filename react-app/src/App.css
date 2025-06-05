@@ -177,3 +177,19 @@ a:hover {
   background-color: #eee;
 }
 
+.summary-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: #1a1a1a;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  min-width: 180px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+}
