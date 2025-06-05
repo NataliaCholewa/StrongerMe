@@ -41,11 +41,6 @@ public class Exercise {
     @JsonIgnore
     private List<WorkoutExercise> workoutExercises;
 
-
-    @OneToMany(mappedBy = "exercise")
-    private List<RoutineExercise> routineExercises;
-
-
     public Exercise() {} 
     public Exercise(String name, String description, String imageUrl) {
         this.name = name;
@@ -109,13 +104,6 @@ public class Exercise {
         this.workoutExercises = workoutExercises;
     }
 
-    public List<RoutineExercise> getRoutineExercises() {
-        return routineExercises;
-    }
-
-    public void setRoutineExercises(List<RoutineExercise> routineExercises) {
-        this.routineExercises = routineExercises;
-    }
 
 
     

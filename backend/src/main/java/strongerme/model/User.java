@@ -46,13 +46,6 @@ private Integer weeklyGoal = 5;
     @OneToMany(mappedBy = "user")
     private List<Workout> workouts;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Routine> routines;
-
-    @OneToMany(mappedBy = "user")                 
-    private List<FavoriteExercise> favoriteExercises;
-
 
     public User() {}
 
@@ -75,9 +68,6 @@ private Integer weeklyGoal = 5;
     public Role getRole() { return role; }
     public LocalDate getCreatedAt() { return createdAt; }
     public List<Workout> getWorkouts() { return workouts; }
-    public List<Routine> getRoutines() { return routines; }
-    public List<FavoriteExercise> getFavoriteExercises() { return favoriteExercises; }
-
 
     public void setId(UUID id) { this.id = id; }
     public void setEmail(String email) { this.email = email; }
@@ -92,8 +82,5 @@ private Integer weeklyGoal = 5;
     public void setRole(Role role) { this.role = role; }
     public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
     public void setWorkouts(List<Workout> workouts) { this.workouts = workouts; }
-    public void setRoutines(List<Routine> routines) { this.routines = routines; }
-    public void setFavoriteExercises(List<FavoriteExercise> favoriteExercises) { this.favoriteExercises = favoriteExercises; }
-
-    
+  
 }
