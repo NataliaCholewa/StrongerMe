@@ -193,3 +193,52 @@ a:hover {
   color: white;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
 }
+
+.home-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #111;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin: 1rem 0 2rem;
+  color: #ccc;
+}
+
+.home-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.home-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.home-btn:hover {
+  background-color: #9f58ff;
+}
+
+.home-btn.outline {
+  background-color: transparent;
+  border: 2px solid #7c3aed;
+}

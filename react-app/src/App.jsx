@@ -9,6 +9,7 @@ import WorkoutBuilder from "./pages/WorkoutBuilder";
 import WorkoutDetailsPage from "./pages/WorkoutDetailsPage";
 import EditWorkoutPage from "./pages/EditWorkoutPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
+import HomePage from "./pages/HomePage";
 import Layout from "./components/Layout";
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
     <Routes>
+      <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
