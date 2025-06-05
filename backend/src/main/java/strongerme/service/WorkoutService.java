@@ -10,6 +10,7 @@ import strongerme.model.*;
 import strongerme.repository.ExerciseRepository;
 import strongerme.repository.WorkoutRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -72,12 +73,33 @@ public class WorkoutService {
         dto.setDescription(workout.getDescription());
         dto.setPerformedAt(workout.getPerformedAt());
 
+        System.out.println("Mapping workout: " + workout.getId());
+
+if (workout.getWorkoutExercises() == null) {
+    System.out.println("Workout exercises is null!");
+} else {
+    System.out.println("Workout exercises count: " + workout.getWorkoutExercises().size());
+    for (WorkoutExercise we : workout.getWorkoutExercises()) {
+        System.out.println("WorkoutExercise ID: " + we.getId());
+        System.out.println(" - sets: " + we.getSets());
+        System.out.println(" - reps: " + we.getReps());
+        System.out.println(" - weight: " + we.getWeight());
+        System.out.println(" - Exercise: " + (we.getExercise() != null ? we.getExercise().getName() : "null"));
+    }
+}
+
         List<WorkoutDetailsDto.ExerciseEntry> entries = workout.getWorkoutExercises()
+        
                 .stream()
                 .map(we -> {
                     WorkoutDetailsDto.ExerciseEntry entry = new WorkoutDetailsDto.ExerciseEntry();
                     entry.setId(we.getId());
-                    entry.setName(we.getExercise().getName());
+                    if (we.getExercise() != null) {
+                        entry.setName(we.getExercise().getName());
+                    } else {
+                        entry.setName("Unknown Exercise");
+                    }
+
                     entry.setSets(we.getSets());
                     entry.setReps(we.getReps());
                     entry.setWeight(we.getWeight());
@@ -99,6 +121,7 @@ public class WorkoutService {
         workout.setName(request.getName());
         workout.setDescription(request.getDescription());
         workout.setUser(user);
+        workout.setPerformedAt(LocalDateTime.now());
 
         List<WorkoutExercise> workoutExercises = new ArrayList<>();
 

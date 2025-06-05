@@ -48,7 +48,6 @@ public class WorkoutController {
     @ApiResponse(responseCode = "404", description = "Trening nie istnieje")
     })
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<WorkoutDetailsDto> getWorkoutById(@PathVariable UUID id) {
     Workout workout = workoutService.getWorkoutById(id);

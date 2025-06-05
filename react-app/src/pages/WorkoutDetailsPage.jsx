@@ -29,14 +29,23 @@ const WorkoutDetailsPage = () => {
     <div>
       <h2>{workout.name}</h2>
       <p>{workout.description}</p>
-      <small>{new Date(workout.performedAt).toLocaleString()}</small>
+      <small>
+      {new Date(workout.performedAt).toLocaleDateString("pl-PL", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      })}
+      </small>
+
 
       <h3>Exercises</h3>
       {workout.workoutExercises && workout.workoutExercises.length > 0 ? (
         <ul>
           {workout.workoutExercises.map((ex) => (
             <li key={ex.id}>
-              <strong>{ex.exercise.name}</strong> – {ex.sets} sets × {ex.reps} reps @ {ex.weight} kg
+            <strong>{ex.name}</strong> – {ex.sets} sets × {ex.reps} reps @ {ex.weight} kg
             </li>
           ))}
         </ul>
